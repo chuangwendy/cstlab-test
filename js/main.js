@@ -44,4 +44,50 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    // =======================================
+    // 圖片點擊放大 (Lightbox Modal)
+    // =======================================
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCaption = document.getElementById('modal-caption');
+    const modalClose = document.getElementById('modal-close');
+    const topicImages = document.querySelectorAll('.topic-image');
+
+    if (modal && modalImg && topicImages.length > 0) {
+        // 點擊任意文章配圖時開啟
+        topicImages.forEach(img => {
+            img.addEventListener('click', () => {
+                modalImg.src = img.src;
+                modalCaption.textContent = img.alt || '';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 鎖定背景頁面滾動
+            });
+        });
+
+        // 關閉燈箱函式
+        const closeModal = () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // 恢復背景滾動
+        };
+
+        // 1. 點擊右上角 X 關閉
+        if (modalClose) {
+            modalClose.addEventListener('click', closeModal);
+        }
+
+        // 2. 點擊圖片外部黑色背景關閉
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // 3. 按鍵盤 ESC 鍵關閉
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
+
 });
